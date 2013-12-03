@@ -8,6 +8,7 @@ public class Jail extends UntypedActor{
 	private ArrayList<Passenger> illegalPeopleList = new ArrayList<Passenger>();
 	private ActorRef badPassenger;
 	private int numOfQueues;
+	
 	/**
 	 * onReceive method tells jail actor what to do when a message is received
 	 */
