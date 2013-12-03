@@ -12,7 +12,7 @@ public class CheckBag {
 		return bagID;
 	}
 	
-	public getResult(){
+	public boolean getResult(){
 		return result;
 	}
 }
