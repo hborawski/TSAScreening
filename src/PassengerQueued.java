@@ -4,4 +4,9 @@ public class PassengerQueued {
 	public PassengerQueued(int passengerID){
 		this.passengerID = passengerID;
 	}
+	
+	public int getPassengerID(){
+		return passengerID;
+	}
 }
+

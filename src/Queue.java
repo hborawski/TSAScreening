@@ -18,11 +18,25 @@ public class Queue extends UntypedActor {
 	 */
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof PassengerQueued){ //initial message
+			int id = ((PassengerQueued)message).getPassengerID();
+			ActorRef bagScanner = akka.actor.Actors.actorOf(BagScanner.class);
+			ActorRef bodyScanner = akka.actor.Actors.actorOf(BodyScanner.class);
+			CheckBag bag = new CheckBag(id);
+			CheckPassenger pass = new CheckPassenger(id);
 			
+			bagScanner.tell(bag);
+			bodyScanner.tell(pass);
 		}
 		else if(message instanceof Passenger){ //returned results from the security check
 			Passenger p = (Passenger)message;
 			System.out.println("Queue: "+p.getId()+" finished security.");
+			if( !p.getLegality()){
+				JailPassenger j = new JailPassenger(p);
+				ActorRef jail = akka.actor.Actors.actorOf(Jail.class);
+				jail.tell(j);			
+			}else{
+				//remove from system?
+			}
 		}
 		
 	}
