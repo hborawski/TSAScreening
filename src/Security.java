@@ -18,6 +18,7 @@ public class Security extends UntypedActor{
 				PASSenger.setLegality(false);
 				//Tell queue the result
 				ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+				queue.start();
 				queue.tell(PASSenger);
 			}
 			else if(bodyResults.size() > 1){ //at least 1 body has been scanned
@@ -28,6 +29,7 @@ public class Security extends UntypedActor{
 							PASSenger.setLegality(true);
 							//Tell queue the result
 							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+							queue.start();
 							queue.tell(PASSenger);
 						}
 					}
@@ -48,6 +50,7 @@ public class Security extends UntypedActor{
 				PASSenger.setLegality(false);
 				//Tell queue the result
 				ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+				queue.start();
 				queue.tell(PASSenger);
 			}
 			else if(bagResults.size() > 1){ //at least 1 bag has been scanned
@@ -58,6 +61,7 @@ public class Security extends UntypedActor{
 							PASSenger.setLegality(true);
 							//Tell queue the result
 							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+							queue.start();
 							queue.tell(PASSenger);
 						}
 					}
