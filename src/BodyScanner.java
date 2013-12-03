@@ -5,7 +5,7 @@ import akka.actor.UntypedActor;
 
 
 public class BodyScanner extends UntypedActor{
-	private Random random;
+	private Random random = new Random();
 	private int ID;
 	private int passengerID;
 	@Override
