@@ -10,7 +10,7 @@ public class Main {
 		
 		PassengerBagChecked bag1 = new PassengerBagChecked(1, true);
 		PassengerBagChecked bag2 = new PassengerBagChecked(2, true);
-		PassengerBagChecked bag3 = new PassengerBagChecked(3, false);
+		PassengerBagChecked bag3 = new PassengerBagChecked(3, true);
 		
 		ActorRef queueActor = akka.actor.Actors.actorOf(Queue.class);
 		queueActor.start();

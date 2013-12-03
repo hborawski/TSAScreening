@@ -22,7 +22,7 @@ public class Queue extends UntypedActor {
 		}
 		else if(message instanceof Passenger){ //returned results from the security check
 			Passenger p = (Passenger)message;
-			System.out.println("Queue: "+p.getId()+" finished security.");
+			System.out.println("Queue: "+p.getId()+" finished security. Legality: "+p.getLegality());
 		}
 		
 	}
