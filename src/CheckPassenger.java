@@ -6,7 +6,7 @@ public class CheckPassenger {
 		this.passengerID = passID;
 	}
 	
-	public int getPassengerId(){
+	public int getPassengerID(){
 		return passengerID;
 	}
 }

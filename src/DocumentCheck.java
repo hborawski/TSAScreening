@@ -10,7 +10,7 @@ public class DocumentCheck extends UntypedActor{
 	@Override
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof PassengerEnters){
-			passengerID = ((PassengerEnters) message).getPassengerId();
+			passengerID = ((PassengerEnters) message).getPassengerID();
 			PassengerQueued sendMessage;
 			if(random.nextInt(10) >= 2){
 				sendMessage = new PassengerQueued(passengerID);

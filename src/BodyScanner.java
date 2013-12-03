@@ -11,7 +11,7 @@ public class BodyScanner extends UntypedActor{
 	@Override
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof CheckPassenger){
-			passengerID = ((CheckPassenger) message).getPassengerId();
+			passengerID = ((CheckPassenger) message).getPassengerID();
 			PassengerBodyChecked sendMessage;
 			if(random.nextInt(10) >= 2){
 				sendMessage = new PassengerBodyChecked(passengerID, true);
