@@ -13,19 +13,19 @@ public class Security extends UntypedActor{
 			PassengerBagChecked bagScan = (PassengerBagChecked)message;
 			bagResults.add(bagScan); //add the bag scan result to an array list
 			System.out.println("Passenger: "+bagScan.getPassengerID()+" bag was scanned.");
-			if(bodyResults.size() > 1){ //at least 1 body has been scanned
+			if(bagScan.getResult()==false){ // illegal passenger
+				Passenger PASSenger = new Passenger(bagScan.getPassengerID());
+				PASSenger.setLegality(false);
+				//Tell queue the result
+				ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+				queue.tell(PASSenger);
+			}
+			else if(bodyResults.size() > 1){ //at least 1 body has been scanned
 				for(int i=0; i<bodyResults.size(); i++){
 					if(bodyResults.get(i).getPassengerID() == bagScan.getPassengerID()){ //both results are present
 						if(bodyResults.get(i).getResult()==true){
 							Passenger PASSenger = new Passenger(bagScan.getPassengerID());
 							PASSenger.setLegality(true);
-							//Tell queue the result
-							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-							queue.tell(PASSenger);
-						}
-						else if(bodyResults.get(i).getResult()==false){
-							Passenger PASSenger = new Passenger(bagScan.getPassengerID());
-							PASSenger.setLegality(false);
 							//Tell queue the result
 							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
 							queue.tell(PASSenger);
@@ -36,26 +36,26 @@ public class Security extends UntypedActor{
 					}
 				}
 			}
-			else{System.out.println("No bosy scan has been processed.");}
+			else{System.out.println("No body scan has been processed.");}
 		}
 			
 		else if(message instanceof PassengerBodyChecked){
 			PassengerBodyChecked bodyScan = (PassengerBodyChecked)message;
 			bodyResults.add(bodyScan); //add the body scan result to an array list
 			System.out.println("Passenger: "+bodyScan.getPassengerID()+" body was scanned.");
-			if(bagResults.size() > 1){ //at least 1 bag has been scanned
+			if(bodyScan.getResult()==false){ // illegal passenger
+				Passenger PASSenger = new Passenger(bodyScan.getPassengerID());
+				PASSenger.setLegality(false);
+				//Tell queue the result
+				ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+				queue.tell(PASSenger);
+			}
+			else if(bagResults.size() > 1){ //at least 1 bag has been scanned
 				for(int i=0; i<bagResults.size(); i++){
 					if(bagResults.get(i).getPassengerID() == bodyScan.getPassengerID()){ //both results are present
 						if(bodyResults.get(i).getResult()==true){
 							Passenger PASSenger = new Passenger(bodyScan.getPassengerID());
 							PASSenger.setLegality(true);
-							//Tell queue the result
-							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-							queue.tell(PASSenger);
-						}
-						else if(bagResults.get(i).getResult()==false){
-							Passenger PASSenger = new Passenger(bodyScan.getPassengerID());
-							PASSenger.setLegality(false);
 							//Tell queue the result
 							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
 							queue.tell(PASSenger);

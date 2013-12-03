@@ -17,11 +17,12 @@ public class Queue extends UntypedActor {
 	 * Method that knows what to do when a message is sent to Queue actor
 	 */
 	public void onReceive(Object message) throws Exception {
-		if(message instanceof DocumentCheck){ //initial message
-			;
-		}
-		if(message instanceof Security){ //returned results from the security check
+		if(message instanceof PassengerQueued){ //initial message
 			
+		}
+		else if(message instanceof Passenger){ //returned results from the security check
+			Passenger p = (Passenger)message;
+			System.out.println("Queue: "+p.getId()+" finished security.");
 		}
 		
 	}
