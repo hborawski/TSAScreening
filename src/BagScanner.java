@@ -18,6 +18,7 @@ public class BagScanner extends UntypedActor{
 				PassengerBagCheck = new PassengerBagCheck(BagID, false);
 				System.out.println("Bag Scanner: " + ID + " failed bagID " + BagID);
 			}
+			
 		}
 		
 	}
