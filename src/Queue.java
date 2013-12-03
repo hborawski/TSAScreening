@@ -29,7 +29,7 @@ public class Queue extends UntypedActor {
 		}
 		else if(message instanceof Passenger){ //returned results from the security check
 			Passenger p = (Passenger)message;
-			System.out.println("Queue: "+p.getId()+" finished security.");
+			System.out.println("Queue: "+p.getId()+" finished security. Legality: "+p.getLegality());
 			if( !p.getLegality()){
 				JailPassenger j = new JailPassenger(p);
 				ActorRef jail = akka.actor.Actors.actorOf(Jail.class);
@@ -37,6 +37,7 @@ public class Queue extends UntypedActor {
 			}else{
 				//remove from system?
 			}
+			
 		}
 		
 	}
