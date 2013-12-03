@@ -1,74 +1,74 @@
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
-
+import java.util.ArrayList;
 
 public class Security extends UntypedActor{
 	
-	private int bagTemp=-1, bodyTemp=-1;
-	private int linNum; //the line in which the security scanner is at
+	public static ArrayList<PassengerBagChecked> bagResults = new ArrayList<PassengerBagChecked>();
+	public static ArrayList<PassengerBodyChecked> bodyResults = new ArrayList<PassengerBodyChecked>();
 	
-	private PassengerBagChecked bagChecked=null; //temp bag check to hold the content of the real bag check if bag
-										// check happens before body check
 	
-	private PassengerBodyChecked bodyChecked= null; //temp body check to hold the content of the real body check if body
-										  // check happens before bag check
-	/**
-	 * method that handles when a message is sent to Security class
-	 */
-	public void onReceive(Object message) throws Exception {
-		if(message instanceof PassengerBagChecked){ 
-			PassengerBagChecked bag = (PassengerBagChecked)message;
-			bagChecked = bag; //assign the bag results to temp bagChecked
-			if(bag.getResult() == true){
-				bagTemp = 0;
-				if((bodyChecked!=null) && (bodyChecked.getResult()==true)){ //both scans passed
-					Passenger PASSenger = new Passenger(bagChecked.getPassengerID());
-					PASSenger.setLegality(true);
-					
-					//Tell queue the result
-					ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-					
-					queue.tell(PASSenger);
+	public void onReceive(Object message) throws Exception{
+		if(message instanceof PassengerBagChecked){
+			PassengerBagChecked bagScan = (PassengerBagChecked)message;
+			bagResults.add(bagScan); //add the bag scan result to an array list
+			System.out.println("Passenger: "+bagScan.getPassengerID()+" bag was scanned.");
+			if(bodyResults.size() > 1){ //at least 1 body has been scanned
+				for(int i=0; i<bodyResults.size(); i++){
+					if(bodyResults.get(i).getPassengerID() == bagScan.getPassengerID()){ //both results are present
+						if(bodyResults.get(i).getResult()==true){
+							Passenger PASSenger = new Passenger(bagScan.getPassengerID());
+							PASSenger.setLegality(true);
+							//Tell queue the result
+							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+							queue.tell(PASSenger);
+						}
+						else if(bodyResults.get(i).getResult()==false){
+							Passenger PASSenger = new Passenger(bagScan.getPassengerID());
+							PASSenger.setLegality(false);
+							//Tell queue the result
+							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+							queue.tell(PASSenger);
+						}
+					}
+					else{//do nothing
+						System.out.println("Passenger: "+bagScan.getPassengerID()+" bag scanned, but body not.");
+					}
 				}
-			} //bag passed the scan
-			else{
-				bagTemp =1;
-				Passenger PASSenger = new Passenger(bagChecked.getPassengerID());
-				PASSenger.setLegality(false); //failed bag scan
-				
-				//Tell queue the result
-				ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-				
-				queue.tell(PASSenger);
-			} //bad failed the scan
+			}
+			else{System.out.println("No bosy scan has been processed.");}
 		}
+			
 		else if(message instanceof PassengerBodyChecked){
-			PassengerBodyChecked body = (PassengerBodyChecked)message;
-			bodyChecked = body;
-			if(body.getResult() == true){
-				bodyTemp = 0;
-				if((bagChecked!=null) && (bagChecked.getResult()==true)){ //both scans passed
-					Passenger PASSenger = new Passenger(bagChecked.getPassengerID());
-					PASSenger.setLegality(true);
-					
-					//Tell queue the result
-					ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-					
-					queue.tell(PASSenger);
+			PassengerBodyChecked bodyScan = (PassengerBodyChecked)message;
+			bodyResults.add(bodyScan); //add the body scan result to an array list
+			System.out.println("Passenger: "+bodyScan.getPassengerID()+" body was scanned.");
+			if(bagResults.size() > 1){ //at least 1 bag has been scanned
+				for(int i=0; i<bagResults.size(); i++){
+					if(bagResults.get(i).getPassengerID() == bodyScan.getPassengerID()){ //both results are present
+						if(bodyResults.get(i).getResult()==true){
+							Passenger PASSenger = new Passenger(bodyScan.getPassengerID());
+							PASSenger.setLegality(true);
+							//Tell queue the result
+							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+							queue.tell(PASSenger);
+						}
+						else if(bagResults.get(i).getResult()==false){
+							Passenger PASSenger = new Passenger(bodyScan.getPassengerID());
+							PASSenger.setLegality(false);
+							//Tell queue the result
+							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+							queue.tell(PASSenger);
+						}
+					}
+					else{//do nothing
+						System.out.println("Passenger: "+bodyScan.getPassengerID()+" body scanned, but bag not.");
+					}
 				}
-			} //bag passed the scan
-			else{
-				bodyTemp =1;
-				Passenger PASSenger = new Passenger(bagChecked.getPassengerID());
-				PASSenger.setLegality(false); // failed the body scan
-				
-				//Tell queue the result
-				ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-				
-				queue.tell(PASSenger);
-			} //bad failed the scan
+			}
+			else{System.out.println("No bags to process yet");}
 		}
-		
+	
 	}
 
 }
