@@ -7,7 +7,11 @@ public class BagScanner extends UntypedActor{
 	private Random ran = new Random();
 	private int ID;
 	private int BagID;
+	private ActorRef security;
 	
+	public BagScanner(ActorRef security){
+		this.security = security;
+	}
 	@Override
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof CheckBag){
@@ -22,7 +26,7 @@ public class BagScanner extends UntypedActor{
 			}
 			
 			//Tell security the result
-			ActorRef security = akka.actor.Actors.actorOf(Security.class);
+			//ActorRef security = akka.actor.Actors.actorOf(Security.class);
 			
 			security.tell(bagMessage);
 			

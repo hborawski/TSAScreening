@@ -8,7 +8,12 @@ public class BodyScanner extends UntypedActor{
 	private Random random = new Random();
 	private int ID;
 	private int passengerID;
-	@Override
+	private ActorRef security;
+	
+	public BodyScanner(ActorRef security){
+		this.security = security;
+	}
+	
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof CheckPassenger){
 			passengerID = ((CheckPassenger) message).getPassengerID();
@@ -22,7 +27,7 @@ public class BodyScanner extends UntypedActor{
 			}
 			
 			//Tell security the result
-			ActorRef security = akka.actor.Actors.actorOf(Security.class);
+			//ActorRef security = akka.actor.Actors.actorOf(Security.class);
 			
 			security.tell(sendMessage);
 		}
