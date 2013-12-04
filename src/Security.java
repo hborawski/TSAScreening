@@ -20,7 +20,7 @@ public class Security extends UntypedActor{
 		if(message instanceof PassengerBagChecked){
 			PassengerBagChecked bagScan = (PassengerBagChecked)message;
 			bagResults.add(bagScan); //add the bag scan result to an array list
-			System.out.println("Passenger: "+bagScan.getPassengerID()+" bag was scanned.");
+			System.out.println("Security actor: "+bagScan.getPassengerID()+" bag was scanned.");
 			if(bagScan.getResult()==false){ // illegal passenger
 				//bagResults.remove(bagScan);
 				Passenger PASSenger = new Passenger(bagScan.getPassengerID());
@@ -39,7 +39,7 @@ public class Security extends UntypedActor{
 						}
 					}
 					else{//do nothing
-						System.out.println("Passenger: "+bagScan.getPassengerID()+" bag scanned, but body not.");
+						System.out.println("Security actor: "+bagScan.getPassengerID()+" bag scanned, but body not.");
 					}
 				}
 			}
@@ -49,7 +49,7 @@ public class Security extends UntypedActor{
 		else if(message instanceof PassengerBodyChecked){
 			PassengerBodyChecked bodyScan = (PassengerBodyChecked)message;
 			bodyResults.add(bodyScan); //add the body scan result to an array list
-			System.out.println("Passenger: "+bodyScan.getPassengerID()+" body was scanned.");
+			System.out.println("Security actor: "+bodyScan.getPassengerID()+" body was scanned.");
 			if(bodyScan.getResult()==false){ // illegal passenger
 				Passenger PASSenger = new Passenger(bodyScan.getPassengerID());
 				PASSenger.setLegality(false);
@@ -68,7 +68,7 @@ public class Security extends UntypedActor{
 						}
 					}
 					else{//do nothing
-						System.out.println("Passenger: "+bodyScan.getPassengerID()+" body scanned, but bag not.");
+						System.out.println("Security actor: "+bodyScan.getPassengerID()+" body scanned, but bag not.");
 					}
 				}
 			}

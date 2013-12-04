@@ -7,8 +7,7 @@ import akka.actor.UntypedActorFactory;
 
 public class Main {
 	private static int count = 11;
-	private static ArrayList<ActorRef> lines = new ArrayList<ActorRef>();
-	
+	private ArrayList<PassengerEnters> allPassengers = new ArrayList<PassengerEnters>();
 	/**
 	 * Add passengers to each line
 	 * @param line Line number
@@ -26,29 +25,13 @@ public class Main {
 	 */
 	public static void main(String args[]){
 		
-		int totalLines = 1; // total number of lines
-		int passL1 = 20; // passengers in line 1
-		int passL2 = 5; // passengers in line 2
-		int passL3 = 2; // passengers in line 3
+		int totalPassengers= 2; //total number of passengers
 		
-		final ActorRef jailActor = akka.actor.Actors.actorOf(Jail.class);
-		jailActor.start();
 		
-		int line;
-		for( line=0; line<totalLines; line++){
-			final int l = line+1;
-			final ActorRef lineActor = Actors.actorOf(new UntypedActorFactory(){
-				public Actor create(){
-					return new Line(l, jailActor);
-				}
-			});
-			lineActor.start();
-			lines.add(lineActor);
-		} //end of loop
-		
-		addPassengers(lines.get(0), passL1);
-		//addPassengersToLine(lines.get(1), passL2);
-		//addPassengersToLine(lines.get(2), passL3);
+		 ActorRef documentActor = akka.actor.Actors.actorOf(DocumentCheck.class);
+		 documentActor.start();
+		 
+		 addPassengers(documentActor, totalPassengers);
 		
 	}
 }

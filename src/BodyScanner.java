@@ -22,10 +22,10 @@ public class BodyScanner extends UntypedActor{
 			PassengerBodyChecked sendMessage;
 			if(random.nextInt(10) >= 2){
 				sendMessage = new PassengerBodyChecked(passengerID, true);
-				System.out.println("Body Scanner: " + ID + " passed passengerID " + passengerID);
+				System.out.println("Body Scanner actor: " + ID + " passed passengerID " + passengerID);
 			}else{
 				sendMessage = new PassengerBodyChecked(passengerID, false);
-				System.out.println("Body Scanner: " + ID + " failed passengerID " + passengerID);
+				System.out.println("Body Scanner actor: " + ID + " failed passengerID " + passengerID);
 			}
 			
 			//Tell security the result

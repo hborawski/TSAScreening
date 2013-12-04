@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Random;
 
 import akka.actor.Actor;
@@ -8,24 +9,47 @@ import akka.actor.UntypedActorFactory;
 
 public class DocumentCheck extends UntypedActor{
 	private Random random = new Random();
-	private int ID;
 	private int passengerID;
-	@Override
+	static int checkLinesMade = 0;
+	private static ArrayList<ActorRef> lines = new ArrayList<ActorRef>();
+	
+	public void makeLines(int totalLines){
+		final ActorRef jailActor = akka.actor.Actors.actorOf(Jail.class);
+		jailActor.start();
+		
+		for( int line=0; line<totalLines; line++){
+			final int l = line+1;
+			final ActorRef lineActor = Actors.actorOf(new UntypedActorFactory(){
+				public Actor create(){
+					return new Line(l, jailActor);
+				}
+			});
+			lineActor.start();
+			lines.add(lineActor);
+		} // end of loop
+		checkLinesMade = 1;
+	}
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof PassengerEnters){
+			if(checkLinesMade==0){
+				makeLines(1); //Number of lines can be changed here!!!
+				System.out.println("Lines made");
+			}
 			passengerID = ((PassengerEnters) message).getPassengerID();
 			PassengerQueued sendMessage;
 			if(random.nextInt(10) >= 2){
 				sendMessage = new PassengerQueued(passengerID);
-				System.out.println("Document Check: " + ID + " passed passengerID " + passengerID);
+				System.out.println("Document Check actor: PassengerID " + passengerID+" PASSED.");
 				
+				int selectLine = new Random().nextInt(lines.size());
 				//Queue the passenger since they pass
-				ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
+				//ActorRef line = akka.actor.Actors.actorOf(Line.class);
+				lines.get(selectLine).tell(sendMessage);
 				
-				queue.tell(sendMessage);
-			}else{
+			}
+			else{
 				sendMessage = new PassengerQueued(passengerID);
-				System.out.println("Document Check: " + ID + " failed passengerID " + passengerID);
+				System.out.println("Document Check actor: PassengerID " + passengerID+" FAILED.");
 			}
 			
 			
