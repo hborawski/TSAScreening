@@ -1,7 +1,10 @@
 import java.util.Random;
 
+import akka.actor.Actor;
 import akka.actor.ActorRef;
+import akka.actor.Actors;
 import akka.actor.UntypedActor;
+import akka.actor.UntypedActorFactory;
 
 public class DocumentCheck extends UntypedActor{
 	private Random random = new Random();

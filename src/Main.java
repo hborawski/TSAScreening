@@ -1,30 +1,54 @@
+import java.util.ArrayList;
+
+import akka.actor.Actor;
 import akka.actor.ActorRef;
+import akka.actor.Actors;
+import akka.actor.UntypedActorFactory;
 
 public class Main {
-
+	private static int count = 11;
+	private static ArrayList<ActorRef> lines = new ArrayList<ActorRef>();
+	
+	/**
+	 * Add passengers to each line
+	 * @param line Line number
+	 * @param num total number of passengers in the line
+	 */
+	public static void addPassengers(ActorRef checkPoint, int num){
+		for(int i=0; i<num; i++){
+			count++;
+			checkPoint.tell(new PassengerEnters(count));
+		}			
+	}
+	/**
+	 * Main method that runs the program
+	 * @param args
+	 */
 	public static void main(String args[]){
 		
-		PassengerBodyChecked body1 = new PassengerBodyChecked(1, true);
-		PassengerBodyChecked body2 = new PassengerBodyChecked(2, false);
-		PassengerBodyChecked body3 = new PassengerBodyChecked(3, true);
+		int totalLines = 1; // total number of lines
+		int passL1 = 20; // passengers in line 1
+		int passL2 = 5; // passengers in line 2
+		int passL3 = 2; // passengers in line 3
 		
-		PassengerBagChecked bag1 = new PassengerBagChecked(1, true);
-		PassengerBagChecked bag2 = new PassengerBagChecked(2, true);
-		PassengerBagChecked bag3 = new PassengerBagChecked(3, true);
+		final ActorRef jailActor = akka.actor.Actors.actorOf(Jail.class);
+		jailActor.start();
 		
-		ActorRef queueActor = akka.actor.Actors.actorOf(Queue.class);
-		queueActor.start();
+		int line;
+		for( line=0; line<totalLines; line++){
+			final int l = line+1;
+			final ActorRef lineActor = Actors.actorOf(new UntypedActorFactory(){
+				public Actor create(){
+					return new Line(l, jailActor);
+				}
+			});
+			lineActor.start();
+			lines.add(lineActor);
+		} //end of loop
 		
-		ActorRef securityActor = akka.actor.Actors.actorOf(Security.class);
-		securityActor.start();
+		addPassengers(lines.get(0), passL1);
+		//addPassengersToLine(lines.get(1), passL2);
+		//addPassengersToLine(lines.get(2), passL3);
 		
-		System.out.println("Starting security...");
-		securityActor.tell(body1);
-		securityActor.tell(body2);
-		securityActor.tell(bag1);
-		
-		securityActor.tell(body3);
-		securityActor.tell(bag2);
-		securityActor.tell(bag3);
 	}
 }
