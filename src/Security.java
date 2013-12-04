@@ -8,7 +8,12 @@ public class Security extends UntypedActor{
 	public static ArrayList<PassengerBodyChecked> bodyResults = new ArrayList<PassengerBodyChecked>();
 	
 	private ActorRef queue;
+	private ActorRef jail;
 	
+	public Security(ActorRef jail){
+		super();
+		this.jail = jail;
+	}
 	public void onReceive(Object message) throws Exception{
 		if(message instanceof PassengerBagChecked){
 			PassengerBagChecked bagScan = (PassengerBagChecked)message;
@@ -18,8 +23,6 @@ public class Security extends UntypedActor{
 				Passenger PASSenger = new Passenger(bagScan.getPassengerID());
 				PASSenger.setLegality(false);
 				//Tell queue the result
-				ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-				queue.start();
 				queue.tell(PASSenger);
 			}
 			else if(bodyResults.size() > 1){ //at least 1 body has been scanned
@@ -29,8 +32,6 @@ public class Security extends UntypedActor{
 							Passenger PASSenger = new Passenger(bagScan.getPassengerID());
 							PASSenger.setLegality(true);
 							//Tell queue the result
-							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-							queue.start();
 							queue.tell(PASSenger);
 						}
 					}
@@ -50,8 +51,6 @@ public class Security extends UntypedActor{
 				Passenger PASSenger = new Passenger(bodyScan.getPassengerID());
 				PASSenger.setLegality(false);
 				//Tell queue the result
-				ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-				queue.start();
 				queue.tell(PASSenger);
 			}
 			else if(bagResults.size() > 1){ //at least 1 bag has been scanned
@@ -61,8 +60,6 @@ public class Security extends UntypedActor{
 							Passenger PASSenger = new Passenger(bodyScan.getPassengerID());
 							PASSenger.setLegality(true);
 							//Tell queue the result
-							ActorRef queue = akka.actor.Actors.actorOf(Queue.class);
-							queue.start();
 							queue.tell(PASSenger);
 						}
 					}
