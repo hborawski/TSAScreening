@@ -36,6 +36,7 @@ public class Queue extends UntypedActor {
 				jail.tell(j);			
 			}else{
 				//remove from system?
+				p = null;
 			}
 			
 		}
