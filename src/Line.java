@@ -6,12 +6,14 @@ public class Line extends UntypedActor{
 	private ActorRef bag;
 	private ActorRef body;
 	private ActorRef security;
+	private int lineNum;
 	
 	public Line(int lineNum, ActorRef jail){
-		security = (ActorRef) new Security(jail);
-		bag = (ActorRef) new BagScanner(security);
-		body = (ActorRef) new BodyScanner(security);
-		queue = (ActorRef) new Queue(bag, body, jail);
+		this.lineNum = lineNum;
+		security = (ActorRef) new Security(lineNum, jail);
+		bag = (ActorRef) new BagScanner(lineNum, security);
+		body = (ActorRef) new BodyScanner(lineNum, security);
+		queue = (ActorRef) new Queue(lineNum, bag, body, jail);
 		
 		security.tell(new QueueMessage(queue));
 	}

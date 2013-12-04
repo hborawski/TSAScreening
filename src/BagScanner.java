@@ -9,7 +9,9 @@ public class BagScanner extends UntypedActor{
 	private int BagID;
 	private ActorRef security;
 	
-	public BagScanner(ActorRef security){
+	public BagScanner(int ID, ActorRef security){
+		super();
+		this.ID = ID;
 		this.security = security;
 	}
 	@Override
