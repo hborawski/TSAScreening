@@ -1,19 +1,43 @@
+import akka.actor.Actor;
 import akka.actor.ActorRef;
+import akka.actor.Actors;
 import akka.actor.UntypedActor;
+import akka.actor.UntypedActorFactory;
 
 public class Line extends UntypedActor{
-	private ActorRef queue;
-	private ActorRef bag;
-	private ActorRef body;
-	private ActorRef security;
-	private int lineNum;
+	private final ActorRef queue;
+	private final ActorRef bag;
+	private final ActorRef body;
+	private final ActorRef security;
+	private final int lineNum;
 	
-	public Line(int lineNum, ActorRef jail){
+	public Line(final int lineNum, final ActorRef jail){
 		this.lineNum = lineNum;
-		security = (ActorRef) new Security(lineNum, jail);
-		bag = (ActorRef) new BagScanner(lineNum, security);
-		body = (ActorRef) new BodyScanner(lineNum, security);
-		queue = (ActorRef) new Queue(lineNum, bag, body, jail);
+		
+		security = Actors.actorOf(new UntypedActorFactory(){
+			@Override
+			public Actor create(){
+				return new Security(lineNum, jail);
+			}
+		});
+		bag = Actors.actorOf(new UntypedActorFactory(){
+			@Override
+			public Actor create(){
+				return new BagScanner(lineNum, security);
+			}
+		});
+		body = Actors.actorOf(new UntypedActorFactory(){
+			@Override
+			public Actor create(){
+				return new BodyScanner(lineNum, security);
+			}
+		});
+		queue = Actors.actorOf(new UntypedActorFactory(){
+			@Override
+			public Actor create(){
+				return new Queue(lineNum, bag, body, jail);
+			}
+		});
 		
 		security.start();
 		bag.start();
