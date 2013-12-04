@@ -7,6 +7,7 @@ public class Security extends UntypedActor{
 	public static ArrayList<PassengerBagChecked> bagResults = new ArrayList<PassengerBagChecked>();
 	public static ArrayList<PassengerBodyChecked> bodyResults = new ArrayList<PassengerBodyChecked>();
 	
+	private ActorRef queue;
 	
 	public void onReceive(Object message) throws Exception{
 		if(message instanceof PassengerBagChecked){
@@ -71,6 +72,8 @@ public class Security extends UntypedActor{
 				}
 			}
 			else{System.out.println("No bags to process yet");}
+		}else if(message instanceof QueueMessage){
+			this.queue = ((QueueMessage)message).getQueue();
 		}
 	
 	}

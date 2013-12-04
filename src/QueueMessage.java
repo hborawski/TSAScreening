@@ -1,12 +1,14 @@
+import akka.actor.ActorRef;
+
 
 public class QueueMessage {
-	private Queue queue;
+	private ActorRef queue;
 	
-	public QueueMessage(Queue queue){
+	public QueueMessage(ActorRef queue){
 		this.queue = queue;
 	}
 	
-	public Queue getQueue(){
+	public ActorRef getQueue(){
 		return queue;
 	}
 }
