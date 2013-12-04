@@ -21,6 +21,7 @@ public class Line extends UntypedActor{
 	@Override
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof PassengerQueued){
+			System.out.println("Line actor: "+lineNum+"received passenger. Message Received.");
 			queue.tell(message);
 		}
 	}
