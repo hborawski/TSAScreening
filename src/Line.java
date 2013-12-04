@@ -15,6 +15,11 @@ public class Line extends UntypedActor{
 		body = (ActorRef) new BodyScanner(lineNum, security);
 		queue = (ActorRef) new Queue(lineNum, bag, body, jail);
 		
+		security.start();
+		bag.start();
+		body.start();
+		queue.start();
+		
 		security.tell(new QueueMessage(queue));
 	}
 
