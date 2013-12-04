@@ -10,8 +10,10 @@ public class BodyScanner extends UntypedActor{
 	private int passengerID;
 	private ActorRef security;
 	
-	public BodyScanner(ActorRef security){
+	public BodyScanner(int ID, ActorRef security){
+		super();
 		this.security = security;
+		this.ID = ID;
 	}
 	
 	public void onReceive(Object message) throws Exception {

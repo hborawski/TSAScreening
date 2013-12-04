@@ -9,10 +9,12 @@ public class Security extends UntypedActor{
 	
 	private ActorRef queue;
 	private ActorRef jail;
+	private int ID;
 	
-	public Security(ActorRef jail){
+	public Security(int ID,ActorRef jail){
 		super();
 		this.jail = jail;
+		this.ID = ID;
 	}
 	public void onReceive(Object message) throws Exception{
 		if(message instanceof PassengerBagChecked){

@@ -16,10 +16,14 @@ public class Queue extends UntypedActor {
 	private ActorRef jail;
 	private ActorRef document;
 	
-	public Queue(ActorRef bag, ActorRef body, ActorRef jail){
+	private int ID;
+	
+	public Queue(int ID, ActorRef bag, ActorRef body, ActorRef jail){
+		super();
 		this.bag = bag;
 		this.body = body;
 		this.jail = jail;
+		this.ID = ID;
 	}
 	
 	/**
