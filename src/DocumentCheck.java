@@ -10,7 +10,7 @@ import akka.actor.UntypedActorFactory;
 public class DocumentCheck extends UntypedActor{
 	private Random random = new Random();
 	private int passengerID;
-	static int checkLinesMade = 0;
+	static int checkLinesMade = 0, l;
 	private static ArrayList<ActorRef> lines = new ArrayList<ActorRef>();
 	
 	public void makeLines(int totalLines){
@@ -32,8 +32,9 @@ public class DocumentCheck extends UntypedActor{
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof PassengerEnters){
 			if(checkLinesMade==0){
-				makeLines(1); //Number of lines can be changed here!!!
-				System.out.println("Lines made");
+				l = 4;
+				makeLines(l); //Number of lines can be changed here!!!
+				System.out.println("Lines made: "+l);
 			}
 			passengerID = ((PassengerEnters) message).getPassengerID();
 			PassengerQueued sendMessage;

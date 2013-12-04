@@ -6,7 +6,7 @@ public class JailPassenger {
 		this.p = p;
 	}
 	
-	public Passenger getPassenger(){
-		return p;
+	public int getPassengerID(){
+		return p.getId();
 	}
 }

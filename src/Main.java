@@ -25,7 +25,7 @@ public class Main {
 	 */
 	public static void main(String args[]){
 		
-		int totalPassengers= 2; //total number of passengers
+		int totalPassengers= 20; //total number of passengers
 		
 		
 		 ActorRef documentActor = akka.actor.Actors.actorOf(DocumentCheck.class);

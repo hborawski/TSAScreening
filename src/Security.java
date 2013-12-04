@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Security extends UntypedActor{
 	
-	public static ArrayList<PassengerBagChecked> bagResults = new ArrayList<PassengerBagChecked>();
-	public static ArrayList<PassengerBodyChecked> bodyResults = new ArrayList<PassengerBodyChecked>();
+	private ArrayList<PassengerBagChecked> bagResults = new ArrayList<PassengerBagChecked>();
+	private ArrayList<PassengerBodyChecked> bodyResults = new ArrayList<PassengerBodyChecked>();
 	
 	private ActorRef queue;
 	private ActorRef jail;
@@ -51,6 +51,7 @@ public class Security extends UntypedActor{
 			bodyResults.add(bodyScan); //add the body scan result to an array list
 			System.out.println("Security actor: "+bodyScan.getPassengerID()+" body was scanned.");
 			if(bodyScan.getResult()==false){ // illegal passenger
+				//bodyResults.remove(bodyScan);
 				Passenger PASSenger = new Passenger(bodyScan.getPassengerID());
 				PASSenger.setLegality(false);
 				//Tell queue the result
