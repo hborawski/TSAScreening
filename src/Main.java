@@ -28,7 +28,7 @@ public class Main {
 	 */
 	public static void main(String args[]){
 		
-		int totalPassengers= 3; //total number of passengers can be set here
+		int totalPassengers= 6; //total number of passengers can be set here
 		final int totalLines = 2; // total number of lines at TSA screening can be set here
 		 
 		 final ActorRef documentCheck = Actors.actorOf(new UntypedActorFactory(){

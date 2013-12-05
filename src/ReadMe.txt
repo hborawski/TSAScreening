@@ -19,3 +19,8 @@ Navigate to the folder containing the java files in either a bash or cmd shell a
 
 javac *.java
 java Main
+
+
+====Changing passenger and line count====
+
+To edit both the variables, go to Main.java and edit "totalPassengers" or "totalLines" variable in main method.
