@@ -4,6 +4,10 @@ import akka.actor.Actors;
 import akka.actor.UntypedActor;
 import akka.actor.UntypedActorFactory;
 
+/**
+ * Line actor to represent an individual Line
+ * @author Anshul
+ */
 public class Line extends UntypedActor{
 	private final ActorRef queue;
 	private final ActorRef bag;
@@ -11,6 +15,11 @@ public class Line extends UntypedActor{
 	private final ActorRef security;
 	private final int lineNum;
 	
+	/**
+	 * Public constructor to create a line with a given line number and its jail
+	 * @param lineNum The number of line
+	 * @param jail jail to send bad passengers to
+	 */
 	public Line(final int lineNum, final ActorRef jail){
 		this.lineNum = lineNum;
 		
@@ -48,6 +57,9 @@ public class Line extends UntypedActor{
 	}
 
 	@Override
+	/**
+	 * Method that knows what to do when a queued passenger message is received
+	 */
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof PassengerQueued){
 			System.out.println("Line  actor: "+lineNum+" received passenger. Message Received.");

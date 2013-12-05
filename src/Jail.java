@@ -3,6 +3,11 @@ import java.util.ArrayList;
 import akka.actor.UntypedActor;
 import akka.actor.ActorRef;
 
+/**
+ * Jail actor class that handles messeges received from the Queue actor about
+ * bad passengers.
+ * @author Anshul
+ */
 public class Jail extends UntypedActor{
 	
 	private ArrayList<JailPassenger> illegalPeopleList = new ArrayList<JailPassenger>();
@@ -17,12 +22,9 @@ public class Jail extends UntypedActor{
 			badPassenger++;
 			JailPassenger p = (JailPassenger)message; 
 			illegalPeopleList.add(p); //add the passenger to list of people in jail	
-			System.out.println("Jail actor. "+10+" security stations feeding passengers. "+badPassenger+" bad passengers. Message Received");
-			System.out.println("Passenger: "+p.getPassengerID()+" sent to jail.");
+			System.out.println("PassengerID: "+p.getPassengerID()+" sent to jail.");
+			System.out.println("Jail actor: "+badPassenger+" bad passengers. Message Received.");
 		}
-		
-		//TO DO : print end of day message where all passengers are transferred to permanent detention
-		
 	}
 
 }

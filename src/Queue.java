@@ -3,20 +3,24 @@ import java.util.ArrayList;
 import akka.actor.ActorRef;
 import akka.actor.UntypedActor;
 
-
 /**
  * Queue actor class that represents each individual queue
  * @author Anshul
- *
  */
 public class Queue extends UntypedActor {
 	//private ArrayList<ActorRef> queue = new ArrayList<ActorRef>();
 	private ActorRef bag;
 	private ActorRef body;
 	private ActorRef jail;
-	
 	private int ID;
 	
+	/**
+	 * Public constructor to construct a queue
+	 * @param ID line number
+	 * @param bag Bag to bad scanner actor reference
+	 * @param body Body scanner actor reference
+	 * @param jail Jail reference
+	 */
 	public Queue(int ID, ActorRef bag, ActorRef body, ActorRef jail){
 		super();
 		this.bag = bag;
@@ -32,9 +36,7 @@ public class Queue extends UntypedActor {
 		if(message instanceof PassengerQueued){ //initial message
 			
 			int id = ((PassengerQueued)message).getPassengerID();
-			System.out.println("Queue actor: "+id+" joins queue. Message Received.");
-			//ActorRef bagScanner = akka.actor.Actors.actorOf(BagScanner.class);
-			//ActorRef bodyScanner = akka.actor.Actors.actorOf(BodyScanner.class);
+			System.out.println("Queue actor: "+id+" joins queue in line "+ID+". Message Received.");
 			CheckBag bagCheck = new CheckBag(id);
 			CheckPassenger pass = new CheckPassenger(id);
 			
@@ -46,10 +48,9 @@ public class Queue extends UntypedActor {
 			System.out.println("Queue actor: "+p.getId()+" completed security. Result: "+p.getLegality()+". Message received.");
 			if( p.getLegality()==false){
 				JailPassenger j = new JailPassenger(p);
-				//ActorRef jail = akka.actor.Actors.actorOf(Jail.class);
 				jail.tell(j);			
 			}else{
-				//remove from system?
+				//remove passenger from system
 				p = null;
 			}
 			
