@@ -4,7 +4,7 @@ import akka.actor.UntypedActor;
 import akka.actor.ActorRef;
 
 /**
- * Jail actor class that handles messeges received from the Queue actor about
+ * Jail actor class that handles messages received from the Queue actor about
  * bad passengers.
  * @author Anshul
  */
