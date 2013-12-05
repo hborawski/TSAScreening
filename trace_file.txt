@@ -1,0 +1,61 @@
+====Case 1====
+What messages are processed at each step are shown in comments on the right side.
+
+totalPassengers = 2
+totalLine = 1
+
+Start day.
+Lines made: 1
+Document Check actor: PassengerID 1 PASSED. Message Received. -----Passenger 1 passed document check
+Document Check actor: PassengerID 2 PASSED. Message Received. 
+Line  actor: 0 received passenger. Message Received.          -----Line 0 receives passenger 1
+Line  actor: 0 received passenger. Message Received.
+Queue actor: 1 joins queue in line 0. Message Received.		  -----Queue 0 received passenger 1
+Queue actor: 2 joins queue in line 0. Message Received.
+Bag Scanner actor: Line: 0. FAILED bagID 1					  -----Bag scan fails for passenger 1
+Body Scanner actor: Line: 0. PASSED passengerID 1			  -----Body scan passes for passenger 1
+Body Scanner actor: Line: 0. PASSED passengerID 2
+Bag Scanner actor: Line: 0. PASSED bagID 2
+Security actor: Line: 0. PassengerID: 1 bag scanned.		  ----Security sends the scan results to Queue for passenger 1
+Security actor: Line: 0. PassengerID: 1 body scanned.
+Security actor: Line: 0. PassengerID: 2 body scanned.
+Security actor: Line: 0. PassengerID: 2 bag scanned.
+Queue actor: 1 completed security. Result: false. Message received.  -----Passenger 1 fails the security
+Queue actor: 1 completed security. Result: true. Message received.
+Queue actor: 2 completed security. Result: true. Message received.
+PassengerID: 1 sent to jail.								  -----Passenger 1 is sent to Jail
+Jail actor: 1 bad passengers. Message Received.				  -----1 bad passenger in Jail
+End of day. Jail passengers transfered to permanent detention. ----End of day. All bad passengers sent to permanent detention 
+
+====Case 2====
+totalPassengers = 4
+totalLine = 2
+
+Start day.
+Lines made: 2
+Document Check actor: PassengerID 1 PASSED. Message Received.
+Document Check actor: PassengerID 2 PASSED. Message Received.
+Document Check actor: PassengerID 3 PASSED. Message Received.
+Line  actor: 1 received passenger. Message Received.
+Document Check actor: PassengerID 4 FAILED. Message Received.
+Line  actor: 0 received passenger. Message Received.
+Line  actor: 1 received passenger. Message Received.
+Queue actor: 1 joins queue in line 1. Message Received.
+Queue actor: 3 joins queue in line 0. Message Received.
+Queue actor: 2 joins queue in line 1. Message Received.
+Bag Scanner actor: Line: 0. PASSED bagID 3
+Bag Scanner actor: Line: 1. PASSED bagID 1
+Body Scanner actor: Line: 0. PASSED passengerID 3
+Body Scanner actor: Line: 1. PASSED passengerID 1
+Body Scanner actor: Line: 1. PASSED passengerID 2
+Bag Scanner actor: Line: 1. PASSED bagID 2
+Security actor: Line: 0. PassengerID: 3 bag scanned.
+Security actor: Line: 1. PassengerID: 1 bag scanned.
+Security actor: Line: 0. PassengerID: 3 body scanned.
+Security actor: Line: 1. PassengerID: 1 body scanned.
+Security actor: Line: 1. PassengerID: 2 body scanned.
+Security actor: Line: 1. PassengerID: 2 bag scanned.
+Queue actor: 1 completed security. Result: true. Message received.
+Queue actor: 3 completed security. Result: true. Message received.
+Queue actor: 2 completed security. Result: true. Message received.
+End of day. Jail passengers transfered to permanent detention.

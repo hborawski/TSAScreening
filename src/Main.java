@@ -27,9 +27,9 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String args[]){
-		
-		int totalPassengers= 6; //total number of passengers can be set here
-		final int totalLines = 2; // total number of lines at TSA screening can be set here
+		System.out.println("Start day.");
+		int totalPassengers= 100; //total number of passengers can be set here
+		final int totalLines = 10; // total number of lines at TSA screening can be set here
 		 
 		 final ActorRef documentCheck = Actors.actorOf(new UntypedActorFactory(){
 				@Override
