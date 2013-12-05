@@ -1,13 +1,8 @@
-import java.util.ArrayList;
 
-import akka.actor.Actor;
 import akka.actor.ActorRef;
-import akka.actor.Actors;
-import akka.actor.UntypedActorFactory;
 
 public class Main {
-	private static int count = 11;
-	private ArrayList<PassengerEnters> allPassengers = new ArrayList<PassengerEnters>();
+	private static int count = 0;
 	/**
 	 * Add passengers to each line
 	 * @param line Line number
@@ -25,13 +20,13 @@ public class Main {
 	 */
 	public static void main(String args[]){
 		
-		int totalPassengers= 20; //total number of passengers
+		int totalPassengers= 5; //total number of passengers
 		
 		
 		 ActorRef documentActor = akka.actor.Actors.actorOf(DocumentCheck.class);
 		 documentActor.start();
 		 
 		 addPassengers(documentActor, totalPassengers);
-		
+		 System.out.println("End of day. Jail passengers transfered to permanent detention.");
 	}
 }

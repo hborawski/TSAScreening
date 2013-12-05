@@ -32,8 +32,8 @@ public class DocumentCheck extends UntypedActor{
 	public void onReceive(Object message) throws Exception {
 		if(message instanceof PassengerEnters){
 			if(checkLinesMade==0){
-				l = 4;
-				makeLines(l); //Number of lines can be changed here!!!
+				l = 3; //Number of lines can be changed here!!!
+				makeLines(l); 
 				System.out.println("Lines made: "+l);
 			}
 			passengerID = ((PassengerEnters) message).getPassengerID();
