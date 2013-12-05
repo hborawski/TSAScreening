@@ -40,6 +40,7 @@ public class Main {
 		 documentCheck.start();
 		 
 		 addPassengers(documentCheck, totalPassengers);
+		 try{Thread.sleep(3000);}catch(InterruptedException e){}
 		 System.out.println("End of day. Jail passengers transfered to permanent detention.");
 	}
 }
